@@ -12,6 +12,9 @@ res.status(201).json({message : "student added successfully ", student})
     res.status(500).json({error: "internal server error" ,})
 }
 }
+
+
+
 exports.getAllStudents = async (req, res) => {
     try {
         const allStudents = await Students.find()
@@ -22,3 +25,42 @@ exports.getAllStudents = async (req, res) => {
 
 
 }
+
+
+
+exports.updateStudents = async (req,res)=>{
+    try{
+ const {id} = req.params;
+  const updateStudents = await Students.findByIdAndUpdate(id,req.body,{new:true})
+
+  if(!updateStudents){
+    return res.status(404).json({error:"student not found "})
+  }
+
+  res.status(200).json({message:"students updated successfully ",updateStudents})
+    } catch(error){res.status(500).json({error: "internal server error"})}
+}
+
+
+
+exports.deleteStudents = async (req,res)=>{
+    try{
+
+        const {id} = req.params
+        const deleteStudents = await Students.findByIdAndDelete(id)
+
+        if(!deleteStudents){
+            return res.status(404).json({error:"student not found"})
+        }
+
+  res.status(200).json({
+    message:"student added successfully ",deleteStudents
+  })
+    }catch(error){
+        res.status(500).json({error:"internal server error"})
+    }
+}
+
+
+
+
